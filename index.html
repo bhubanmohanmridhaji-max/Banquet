@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parivar Cafe – Vegetarian Banquet Menu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{--g:#0f3d2e;--g2:#1b5a43;--gold:#e0b84a;--cream:#fdf6dc;--ink:#1c2a22;--line:#d9c27a;--err:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Lora,Georgia,serif;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding:16px 16px 120px}
+header{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:left;padding:12px 0 4px}
+.logo{height:84px;width:auto;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:6px;display:block}
+#flogo{margin:0 auto 12px}
+header h1{font:700 clamp(2rem,6vw,3.2rem) 'Playfair Display',serif;color:var(--g);margin:0}
+header p{margin:0;font-style:italic;color:var(--g2)}
+.banner{background:var(--g);border:3px solid var(--gold);border-radius:28px;text-align:center;padding:18px 12px;margin:16px 0}
+.banner h2{margin:0;font:700 clamp(1.4rem,5vw,2.6rem) 'Playfair Display',serif;color:var(--gold);letter-spacing:.04em}
+.banner span{color:#fff;letter-spacing:.3em;font-size:.85rem}
+.panel{border:1.5px solid var(--line);border-radius:10px;padding:14px;margin-bottom:16px;background:#fffdf3}
+.tag{display:inline-block;background:var(--g);color:#fff;font:600 1rem 'Playfair Display',serif;padding:6px 16px;border-radius:0 18px 18px 0;margin:-14px 0 12px -14px}
+.tag small{color:var(--gold);font-family:Lora,serif;font-weight:400;margin-left:6px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 18px}
+label.f{display:flex;flex-direction:column;font-size:.9rem;font-weight:600;color:var(--g)}
+label.f input,label.f textarea{font:inherit;font-weight:400;color:var(--ink);border:0;border-bottom:1.5px solid var(--g2);background:transparent;padding:6px 2px;outline:none;border-radius:0}
+label.f input:focus,label.f textarea:focus{border-bottom-color:var(--gold);box-shadow:0 2px 0 var(--gold)}
+.bad{color:var(--err)!important}.bad input{border-bottom-color:var(--err)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-bottom:16px}
+.cat{border:1.5px solid var(--line);border-radius:10px;padding:14px;background:#fffdf3;transition:border-color .2s,background .2s}
+.cat.done{border-color:var(--g2);background:#f3f8e8}
+.cat.bad{border-color:var(--err)}
+.cat .tag{font-size:.95rem}
+.opt{display:flex;align-items:center;gap:12px;padding:10px 6px;cursor:pointer;border-radius:6px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.opt:hover{background:#f6edc4}
+.opt input{-webkit-appearance:none;appearance:none;width:22px;height:22px;border:1.8px solid var(--g);border-radius:3px;background:#fff;flex:none;display:grid;place-content:center;margin:0;cursor:pointer}
+.opt input:checked{background:var(--g) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 4.8' fill='none' stroke='%23e0b84a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.opt input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.opt.fixed{cursor:default}.opt.fixed:hover{background:none}
+.common{display:flex;flex-wrap:wrap;gap:6px 28px}
+textarea#notes{width:100%;min-height:80px;border:1.5px solid var(--line);border-radius:8px;background:#fff;font:inherit;padding:8px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--g);color:#fff;border-top:3px solid var(--gold);padding:10px 16px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;z-index:5}
+.bar .msg{font-size:.95rem}
+.bar .msg b{color:var(--gold);font-size:1.15rem}
+.meter{height:6px;background:#ffffff33;border-radius:3px;width:160px;overflow:hidden;margin-top:4px}
+.meter i{display:block;height:100%;width:0;background:var(--gold);transition:width .3s}
+button.btn{font:600 1rem 'Playfair Display',serif;background:var(--gold);color:var(--g);border:0;border-radius:24px;padding:10px 24px;cursor:pointer}
+button.btn:hover{filter:brightness(1.08)}
+button.btn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+button.ghost{background:transparent;color:var(--gold);border:1.5px solid var(--gold)}
+.hide{display:none!important}
+#rate{text-align:center}
+#rate .big{font:700 2.4rem 'Playfair Display',serif;color:var(--g)}
+/* full-screen payable view */
+#full{position:fixed;inset:0;background:var(--g);color:#fff;z-index:20;overflow:auto;padding:24px 16px}
+.fin{max-width:640px;margin:0 auto;text-align:center}
+.fin h2{font:700 1.6rem 'Playfair Display',serif;color:var(--gold);margin:0 0 4px}
+.rateline{font:700 clamp(3rem,14vw,5.5rem) 'Playfair Display',serif;color:var(--gold);line-height:1.1;margin:10px 0 0}
+.rateline small{font-size:.35em;color:#fff;font-weight:600}
+.calc{font-size:1.25rem;margin:8px 0 18px}
+.total{background:var(--cream);color:var(--g);border-radius:16px;padding:18px;margin-bottom:14px}
+.total .amt{font:700 clamp(2.4rem,10vw,3.6rem) 'Playfair Display',serif}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.split div{border:1.5px solid var(--gold);border-radius:12px;padding:12px}
+.split b{display:block;font:700 1.6rem 'Playfair Display',serif;color:var(--gold)}
+.note{background:#ffffff14;border-radius:12px;padding:12px 14px;text-align:left;font-size:.95rem;margin-bottom:18px}
+.acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sum{font-size:.85rem;color:#e8e2c0;margin-bottom:16px}
+.bk{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-top:1px dashed var(--line);padding:10px 0}
+.bk:first-of-type{border-top:0}
+.bk small{display:block;color:#5b6b60}
+.bk button{font:600 .85rem Lora,serif;border:1.5px solid var(--g);background:#fff;color:var(--g);border-radius:16px;padding:5px 14px;cursor:pointer;margin-left:6px}
+.bk button.del{border-color:var(--err);color:var(--err)}
+.menu{background:#ffffff14;border-radius:12px;padding:8px 12px;margin-bottom:16px;font-size:.85rem;text-align:left}
+.menu div{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px solid #ffffff1f}
+.menu div:last-child{border:0}
+.menu span{color:#e8e2c0}.menu b{font-weight:600;text-align:right}
+#shareMsg{margin-top:12px;font-size:.9rem;color:var(--gold)}
+.terms{margin:0;padding-left:20px}.terms li{margin:3px 0}
+.note p{margin:0 0 6px}.note p:last-child{margin:0}
+@media print{body *{visibility:hidden}#full,#full *{visibility:visible}#full{position:absolute;overflow:visible}.acts{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img class="logo" id="hlogo" src="logo.png" alt="Focus Prism logo">
+    <div>
+      <h1>Parivar Cafe</h1>
+      <p>Food for the Soul &middot; by Focus Prism</p>
+    </div>
+  </header>
+  <div class="banner"><h2>VEGETARIAN BANQUET MENU</h2><span>CELEBRATE &bull; CONNECT &bull; SAVOUR</span></div>
+ 
+  <form id="form" novalidate>
+    <section class="panel" aria-labelledby="cd">
+      <div class="tag" id="cd">Customer details</div>
+      <div class="fields">
+        <label class="f" id="l-date">Event date *<input type="date" id="date" required></label>
+        <label class="f" id="l-fp">FP ID (auto-generated)<input type="text" id="fp" readonly tabindex="-1" style="font-weight:600;color:var(--g);cursor:default"></label>
+        <label class="f" id="l-name">Name *<input type="text" id="name" required autocomplete="name"></label>
+        <label class="f" id="l-phone">Phone no. *<input type="tel" id="phone" inputmode="numeric" maxlength="10" placeholder="10-digit mobile" required autocomplete="tel"></label>
+        <label class="f" id="l-org">Organisation<input type="text" id="org" autocomplete="organization"></label>
+        <label class="f" id="l-event">Event<input type="text" id="event" placeholder="Birthday, farewell, meeting…"></label>
+        <label class="f" id="l-pax">No. of guests *<input type="number" id="pax" min="1" step="1" inputmode="numeric" required></label>
+        <label class="f">Email (optional)<input type="email" id="email" autocomplete="email"></label>
+        <label class="f" style="grid-column:1/-1">Special requests<input type="text" id="req"></label>
+      </div>
+    </section>
+ 
+    <div class="grid" id="cats"></div>
+ 
+    <section class="panel">
+      <div class="tag">Common items <small>served to all</small></div>
+      <div class="common">
+        <label class="opt fixed"><input type="checkbox" checked disabled> Plain Rice</label>
+        <label class="opt fixed"><input type="checkbox" checked disabled> Sambar</label>
+        <label class="opt fixed"><input type="checkbox" checked disabled> Chutney</label>
+        <label class="opt fixed"><input type="checkbox" checked disabled> Curd</label>
+      </div>
+    </section>
+ 
+    <section class="panel">
+      <div class="tag">Additional notes <small>allergies / special preferences / others</small></div>
+      <textarea id="notes" aria-label="Additional notes"></textarea>
+    </section>
+ 
+    <section class="panel" id="terms" aria-labelledby="tt">
+      <div class="tag" id="tt">Booking &amp; cancellation terms</div>
+      <ul class="terms">
+        <li>Rate is ₹630 per plate, including tax. Hall charges of ₹3,000 are added to the total amount payable.</li>
+        <li>To confirm the booking, pay an advance of 75% of the total amount. The full amount must be paid before the event.</li>
+        <li><b>Cancellation cannot be done in the last 3 days before the date of the event.</b></li>
+        <li><b>If the booking is cancelled, only 25% of the total amount is payable.</b></li>
+      </ul>
+    </section>
+ 
+    <section class="panel hide" id="rate" aria-live="polite">
+      <div>Your menu is complete. Basic rate</div>
+      <div class="big">₹630 <small style="font-size:.4em">per plate, including tax</small></div>
+      <div>plus hall charges of ₹3,000 added to the total</div>
+    </section>
+  </form>
+ 
+  <section class="panel" id="saved" aria-labelledby="sv">
+    <div class="tag" id="sv">Saved bookings <small>stored on this device</small></div>
+    <div id="bklist"></div>
+    <button type="button" class="btn" id="newbk" style="margin-top:8px">Start new booking</button>
+  </section>
+</div>
+ 
+<div class="bar">
+  <div class="msg"><span id="status">0 of 12 choices made</span><div class="meter"><i id="meter"></i></div></div>
+  <button type="button" class="btn" id="go">Get my rate</button>
+</div>
+ 
+<div id="full" class="hide" role="dialog" aria-modal="true" aria-labelledby="ft">
+  <div class="fin">
+    <img class="logo" id="flogo" alt="Focus Prism logo">
+    <h2 id="ft">Parivar Cafe &ndash; Banquet booking</h2>
+    <div class="sum" id="sum"></div>
+    <div class="menu" id="menuList"></div>
+    <div>Rate</div>
+    <div class="rateline">₹630 <small>per plate</small></div>
+    <div class="calc" id="calc"></div>
+    <div class="calc" id="hallline" style="margin-top:-12px"></div>
+    <div class="total"><div>Total amount payable (including hall charges)</div><div class="amt" id="total"></div></div>
+    <div class="split">
+      <div>Advance (75%)<b id="adv"></b></div>
+      <div>Balance (25%)<b id="bal"></b></div>
+    </div>
+    <div class="note">
+      <p>To confirm your booking, pay the advance of 75% of the total amount. The full amount must be paid before the event.</p>
+      <p><b>Cancellation policy:</b> Cancellation cannot be done in the last 3 days before the date of the event. If cancelled, only 25% of the total amount is payable (<span id="cxamt"></span>).</p>
+    </div>
+    <div class="acts">
+      <button class="btn" id="share" type="button">Send screenshot on WhatsApp</button>
+      <button class="btn ghost" id="save" type="button">Save image</button>
+      <button class="btn ghost" id="print" type="button">Print / Save PDF</button>
+      <button class="btn ghost" id="back" type="button">Edit menu</button>
+    </div>
+    <div id="shareMsg" role="status"></div>
+  </div>
+</div>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const CAFE_WA = ""; // optional cafe WhatsApp number with country code, e.g. "919876543210"
+const RATE = 630, HALL = 3000, ADV = 0.75;
+const MENU = [
+  ["Welcome drink", ["Fresh Lime Mint Cooler","Masala Buttermilk","Aam Panna","Fresh Fruit Punch","Jaljeera"]],
+  ["Soup", ["Sweet Corn Soup","Tomato Basil Soup","Cream of Mushroom","Hot & Sour Soup","Lemon Coriander Soup"]],
+  ["Salads & accompaniments", ["Green Salad","Kachumber Salad","Kimchi Salad","Raita (Boondi / Cucumber)","Pickle & Papad"]],
+  ["Paneer starters", ["Paneer Tikka","Paneer Hariyali Kebab","Paneer Malai Tikka","Tandoori Paneer Bites"]],
+  ["Vegetable starters", ["Hara Bhara Kebab","Corn & Cheese Tikki","Vegetable Spring Rolls","Crispy Baby Corn","Aloo Tikki with Chutneys","Stuffed Mushroom"]],
+  ["Main course – paneer", ["Paneer Butter Masala","Kadai Paneer","Paneer Lababdar","Paneer Methi Malai"]],
+  ["Main course – vegetable", ["Mixed Vegetable Curry","Bhindi Masala","Baingan Bharta","Aloo Gobi","Navratan Korma","Methi Mutter Malai"]],
+  ["Dal", ["Dal Tadka","Dal Makhani","Panchratan Dal","Moong Dal"]],
+  ["Rice", ["Steamed Basmati Rice","Jeera Rice","Veg Pulao","Lemon Rice"]],
+  ["Variety rice", ["Veg Biryani","Tomato Rice","Coconut Rice","Curd Rice"]],
+  ["Bread", ["Phulka","Butter Naan","Garlic Naan","Tandoori Roti"]],
+  ["Desserts", ["Gulab Jamun","Rasgulla","Moong Dal Halwa","Ice Cream (Vanilla/Chocolate)","Fresh Cut Fruits"]]
+];
+const $ = id => document.getElementById(id);
+$("flogo").src = $("hlogo").src;
+{ const ic = document.createElement("link"); ic.rel = "icon"; ic.href = $("hlogo").src; document.head.appendChild(ic); }
+const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
+ 
+// build menu (tick boxes; one pick per category)
+$("cats").innerHTML = MENU.map(([t, items], i) =>
+  `<fieldset class="cat" id="c${i}" style="margin:0"><legend class="tag">${t.replace(/&/g,"&amp;")}<small>choose 1 · tap another to change</small></legend>` +
+  items.map(x => `<label class="opt"><input type="checkbox" data-c="${i}" value="${x.replace(/"/g,"&quot;")}"> ${x.replace(/&/g,"&amp;")}</label>`).join("") +
+  `</fieldset>`).join("");
+ 
+const picks = () => MENU.map((m, i) => {
+  const c = document.querySelector(`input[data-c="${i}"]:checked`);
+  return c ? [m[0], c.value] : null;
+});
+ 
+function refresh() {
+  const p = picks(), n = p.filter(Boolean).length;
+  p.forEach((v, i) => { $("c" + i).classList.toggle("done", !!v); if (v) $("c" + i).classList.remove("bad"); });
+  $("status").textContent = n === MENU.length ? "All 12 choices made" : `${n} of ${MENU.length} choices made`;
+  $("meter").style.width = (n / MENU.length * 100) + "%";
+  $("rate").classList.toggle("hide", n !== MENU.length);
+  $("go").textContent = n === MENU.length ? "View amount payable" : "Get my rate";
+}
+ 
+$("cats").addEventListener("change", e => {
+  const t = e.target;
+  if (t.dataset.c === undefined) return;
+  if (t.checked) document.querySelectorAll(`input[data-c="${t.dataset.c}"]`).forEach(o => { if (o !== t) o.checked = false; });
+  refresh();
+});
+ 
+$("date").min = new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+ 
+function validate() {
+  const bad = [];
+  const need = (id, ok) => { $("l-" + id).classList.toggle("bad", !ok); if (!ok) bad.push($("l-" + id)); };
+  need("date", !!$("date").value);
+  need("fp", $("fp").value.trim().length >= 3);
+  need("name", $("name").value.trim().length > 1);
+  need("phone", /^[6-9]\d{9}$/.test($("phone").value.trim()));
+  need("pax", +$("pax").value >= 1);
+  picks().forEach((v, i) => { if (!v) { $("c" + i).classList.add("bad"); bad.push($("c" + i)); } });
+  if (bad.length) {
+    bad[0].scrollIntoView({ behavior: "smooth", block: "center" });
+    $("status").textContent = "Please fill the highlighted fields";
+    return false;
+  }
+  return true;
+}
+ 
+function details() {
+  const pax = +$("pax").value, food = pax * RATE, total = food + HALL;
+  return { pax, food, total, adv: total * ADV, bal: total - total * ADV };
+}
+ 
+$("go").addEventListener("click", () => {
+  if (!validate()) return;
+  const d = details();
+  $("sum").textContent = `FP ID ${$("fp").value.trim().toUpperCase()} · ${$("name").value.trim()} · Event date ${new Date($("date").value + "T00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}`;
+  $("calc").textContent = `${d.pax} guest${d.pax > 1 ? "s" : ""} × ₹${RATE} = ${inr(d.food)}`;
+  $("total").textContent = inr(d.total);
+  $("adv").textContent = inr(d.adv);
+  $("bal").textContent = inr(d.bal);
+  $("cxamt").textContent = inr(d.total * 0.25);
+  $("hallline").textContent = "+ Hall charges " + inr(HALL);
+  saveBooking(d);
+  $("menuList").innerHTML = picks().map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("") +
+    `<div><span>Common</span><b>Plain Rice, Sambar, Chutney, Curd</b></div>`;
+  $("shareMsg").textContent = "";
+  shotBlob = null; shotReady = null;
+  setTimeout(() => { shotReady = makeShot().catch(() => null); }, 150);
+  $("full").classList.remove("hide");
+  document.body.style.overflow = "hidden";
+  $("back").focus();
+});
+$("back").addEventListener("click", () => { $("full").classList.add("hide"); document.body.style.overflow = ""; });
+$("print").addEventListener("click", () => window.print());
+let shotBlob = null, shotReady = null;
+async function makeShot() {
+  if (!window.html2canvas) throw new Error("lib");
+  const canvas = await html2canvas($("full"), {
+    backgroundColor: "#0f3d2e", scale: Math.max(2, window.devicePixelRatio || 1), useCORS: true, scrollX: 0, scrollY: 0,
+    onclone: doc => {
+      const f = doc.getElementById("full");
+      f.style.cssText += ";position:relative;inset:auto;height:auto;overflow:visible;width:520px;padding:24px 16px";
+      doc.querySelector(".acts").style.display = "none";
+      doc.getElementById("shareMsg").style.display = "none";
+    }
+  });
+  shotBlob = await new Promise(r => canvas.toBlob(r, "image/png"));
+  return shotBlob;
+}
+const getShot = async () => shotBlob || (shotReady ? await shotReady : null) || await makeShot();
+const fpId = () => $("fp").value.trim().toUpperCase();
+function msgText() {
+  const d = details();
+  return [
+    "*Parivar Cafe – Vegetarian Banquet Booking*",
+    `FP ID: ${fpId()}`,
+    `Name: ${$("name").value.trim()} (${$("phone").value.trim()})`,
+    `Event: ${$("event").value.trim() || "-"} on ${$("date").value}`,
+    `Guests: ${d.pax}`, "",
+    ...picks().map(([k, v]) => `${k}: ${v}`),
+    "Common: Plain Rice, Sambar, Chutney, Curd", "",
+    $("notes").value.trim() ? `Notes: ${$("notes").value.trim()}\n` : "",
+    `Rate: ₹${RATE} per plate (incl. tax)`,
+    `Food (${d.pax} × ₹${RATE}): ${inr(d.food)}`,
+    `Hall charges: ${inr(HALL)}`,
+    `Total payable: ${inr(d.total)}`,
+    `Advance 75% to confirm: ${inr(d.adv)}`,
+    "Full payment to be made before the event.",
+    "",
+    "Cancellation: cannot be done in the last 3 days before the event date. If cancelled, only 25% of the total amount (" + inr(d.total * 0.25) + ") is payable."
+  ].join("\n");
+}
+function download(blob) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = fpId() + ".png";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+$("save").addEventListener("click", async () => {
+  try { download(await getShot()); $("shareMsg").textContent = "Screenshot saved to your device."; }
+  catch (e) { $("shareMsg").textContent = "Could not capture the screen. Please take a normal phone screenshot."; }
+});
+$("share").addEventListener("click", async () => {
+  const btn = $("share"), label = btn.textContent;
+  btn.disabled = true; btn.textContent = "Preparing screenshot…";
+  try {
+    const blob = await getShot();
+    const file = new File([blob], fpId() + ".png", { type: "image/png" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], text: msgText() });   // choose WhatsApp in the share sheet
+    } else {
+      download(blob);
+      window.open(`https://wa.me/${CAFE_WA}?text=` + encodeURIComponent(msgText()), "_blank", "noopener");
+      $("shareMsg").textContent = "Screenshot saved. WhatsApp opened with the booking details: attach the saved image to send it.";
+    }
+  } catch (e) {
+    if (e.name !== "AbortError") {
+      window.open(`https://wa.me/${CAFE_WA}?text=` + encodeURIComponent(msgText()), "_blank", "noopener");
+      $("shareMsg").textContent = "Could not attach the screenshot. Booking details were sent as text: take a phone screenshot and attach it.";
+    }
+  } finally { btn.disabled = false; btn.textContent = label; }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("full").classList.contains("hide")) $("back").click(); });
+ 
+/* ---------- localStorage ---------- */
+const FIELDS = ["date","fp","name","phone","org","event","pax","email","req","notes"];
+const SEQ = "parivarCafe.seq", DRAFT = "parivarCafe.draft", BOOKINGS = "parivarCafe.bookings";
+const load = (k, def) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e) { return def; } };
+const store = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } };
+const esc = t => String(t).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+ 
+function snapshot() {
+  const o = {};
+  FIELDS.forEach(f => o[f] = $(f).value);
+  o.picks = MENU.map((m, i) => { const c = document.querySelector(`input[data-c="${i}"]:checked`); return c ? c.value : null; });
+  return o;
+}
+function newFP() {
+  // FP + YYYYMMDD + daily running number, e.g. FP20261029-001
+  const day = new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 10).replace(/-/g, "");
+  const q = load(SEQ, { day: "", n: 0 });
+  const n = q.day === day ? q.n + 1 : 1;
+  store(SEQ, { day, n });
+  return "FP" + day + "-" + String(n).padStart(3, "0");
+}
+function apply(o) {
+  FIELDS.forEach(f => $(f).value = (o && o[f]) || "");
+  if (!$("fp").value) $("fp").value = newFP();
+  document.querySelectorAll("#cats input").forEach(i => i.checked = !!o && !!o.picks && o.picks[+i.dataset.c] === i.value);
+  document.querySelectorAll(".bad").forEach(e => e.classList.remove("bad"));
+  refresh();
+}
+const saveDraft = () => store(DRAFT, snapshot());
+$("form").addEventListener("input", saveDraft);
+$("form").addEventListener("change", saveDraft);
+ 
+function saveBooking(d) {
+  const o = snapshot();
+  o.total = d.total; o.adv = d.adv; o.bal = d.bal; o.savedAt = new Date().toISOString();
+  const all = load(BOOKINGS, {});
+  all[o.date + "_" + o.fp.trim().toUpperCase()] = o;   // one booking per date + FP ID
+  store(BOOKINGS, all);
+  renderBookings();
+}
+function renderBookings() {
+  const all = load(BOOKINGS, {});
+  const keys = Object.keys(all).sort();                 // date-wise order
+  $("bklist").innerHTML = keys.length ? keys.map(k => {
+    const b = all[k];
+    const dt = new Date(b.date + "T00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+    return `<div class="bk"><div><b>${dt}</b> · FP ID ${esc(b.fp.toUpperCase())}<small>${esc(b.name)} · ${esc(b.pax)} guests · ${inr(b.total)} (advance ${inr(b.adv)})</small></div>
+      <div><button type="button" data-open="${esc(k)}">Open</button><button type="button" class="del" data-del="${esc(k)}">Delete</button></div></div>`;
+  }).join("") : "<p style='margin:0;color:#5b6b60'>No saved bookings yet. A booking is saved when you view the amount payable.</p>";
+}
+$("bklist").addEventListener("click", e => {
+  const all = load(BOOKINGS, {});
+  const k = e.target.dataset.open || e.target.dataset.del;
+  if (!k || !all[k]) return;
+  if (e.target.dataset.open) { apply(all[k]); saveDraft(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  else if (confirm("Delete this saved booking?")) { delete all[k]; store(BOOKINGS, all); renderBookings(); }
+});
+$("newbk").addEventListener("click", () => {
+  if (confirm("Clear the form and start a new booking?")) { try { localStorage.removeItem(DRAFT); } catch (e) {} apply(null); saveDraft(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+});
+ 
+apply(load(DRAFT, null));
+saveDraft();
+renderBookings();
+</script>
+</body>
+</html>
